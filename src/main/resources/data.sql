@@ -1,0 +1,7 @@
+INSERT INTO SATELITE (id, name, position) VALUES 
+(1, 'KENOBI', ARRAY[-500, -200]),
+(2, 'SKYWALKER', ARRAY[100, -100]),
+(3, 'SATO', ARRAY[500, 100]);
+
+INSERT INTO MENSAJE_SERIES (id, completed) VALUES
+(1, false);
