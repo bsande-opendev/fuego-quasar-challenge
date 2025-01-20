@@ -11,48 +11,49 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class SateliteTests {
-@Test
+    @Test
     void devuelveLongitudMensaje() {
-        Satelite satelite = Satelite.builder().mensaje(new String[]{"a", "b", "c"}).build();
+        Satelite satelite = new Satelite();
+        satelite.setMessage(new String[]{"a", "b", "c"});
         assertEquals(3, satelite.getLongitudMensaje());
     }
 
     @Test
     void arreglaDesfasaje() {
-        Satelite satelite = Satelite.builder().mensaje(new String[]{"", "", "el", "mensaje"}).build();
+        Satelite satelite = new Satelite();
+        satelite.setMessage(new String[]{"", "", "el", "mensaje"});
         satelite.arreglarDesfasaje(2);
-        assertArrayEquals(new String[]{"el", "mensaje"}, satelite.getMensaje());
+        assertArrayEquals(new String[]{"el", "mensaje"}, satelite.getMessage());
     }
 
     @Test
     void errorArreglarDesfasajeNullMensaje() {
-        Satelite satelite = Satelite.builder().build();
+        Satelite satelite = new Satelite();
         assertThrows(IllegalArgumentException.class, () -> satelite.arreglarDesfasaje(2));
     }
 
     @Test
     void errorCirculosContenidos() {
-        Satelite sat1 = Satelite.builder().coordenadas(new int[]{0, 0}).distancia(5).build();
-        Satelite sat2 = Satelite.builder().coordenadas(new int[]{0, 0}).distancia(2).build();
+        Satelite sat1 = new Satelite("kenobi", 5, null, new int[]{0, 0});
+        Satelite sat2 = new Satelite("sato", 2, null, new int[]{0, 0});
 
         assertThrows(IllegalArgumentException.class, () -> sat1.getInterseccionCon(sat2));
     }
     @Test
     void testRecibirMensaje() {
-        Satelite satelite = Satelite.builder().build();
+        Satelite satelite = new Satelite();
         String[] mensaje = {"este", "", "", "mensaje"};
         satelite.recibirMensaje(100, mensaje);
 
-        assertEquals(100, satelite.getDistancia());
-        assertArrayEquals(mensaje, satelite.getMensaje());
+        assertEquals(100, satelite.getDistance());
+        assertArrayEquals(mensaje, satelite.getMessage());
     }
 
     @Test
     void devuelveAmbosPuntosCuandoHayDosIntersecciones() {
 
-        Satelite keno = Satelite.builder().nombre("kenobi").coordenadas(new int[] {0,0}).build();
-        Satelite sato = Satelite.builder().nombre("sato").coordenadas(new int[] {1,1}).build();
-
+        Satelite keno = new Satelite("kenobi", 0, null, new int[] {0,0});
+        Satelite sato = new Satelite("sato", 0, null, new int[] {1,1});
         keno.recibirMensaje(1, new String[] {""});
         sato.recibirMensaje(1, new String[] {""});
 
@@ -67,9 +68,8 @@ class SateliteTests {
 
     @Test
     void errorNoInterseccion() {
-        Satelite keno = Satelite.builder().nombre("kenobi").coordenadas(new int[] {0,0}).build();
-        Satelite sato = Satelite.builder().nombre("sato").coordenadas(new int[] {2,1}).build();
-
+        Satelite keno = new Satelite("kenobi", 0, null, new int[] {0,0});
+        Satelite sato = new Satelite("sato", 0, null, new int[] {2,1});
         keno.recibirMensaje(1, new String[] {""});
         sato.recibirMensaje(1, new String[] {""});
 

@@ -8,19 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.bauti.quasarchallenge.constants.SatelitesPositions;
 import com.bauti.quasarchallenge.entities.Satelite;
 import com.bauti.quasarchallenge.services.SateliteService;
 
 @SpringBootApplication
 public class ConsoleApplication implements CommandLineRunner{
 
-    static final int[] KENOBI_COORDS = {-500, -200};
-    static final int[] SKYWALKER_COORDS = {100, -100};
-    static final int[] SATO_COORDS = {500, 100};
-
     @Autowired
     private SateliteService satService;
-
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,13 +40,13 @@ public class ConsoleApplication implements CommandLineRunner{
 
         String[] emptymsg = {""};
 
-        Satelite kenobi = Satelite.builder().nombre("kenobi").coordenadas(KENOBI_COORDS).build();
+        Satelite kenobi = new Satelite("kenobi");
         kenobi.recibirMensaje(distKenobi, emptymsg);
 
-        Satelite skywalker = Satelite.builder().nombre("skywalker").coordenadas(SKYWALKER_COORDS).build();
+        Satelite skywalker = new Satelite("skywalker");
         skywalker.recibirMensaje(distSkywalker, emptymsg);
 
-        Satelite sato = Satelite.builder().nombre("sato").coordenadas(SATO_COORDS).build();
+        Satelite sato = new Satelite("sato");
         sato.recibirMensaje(distSato, emptymsg);
 
         List<Satelite> flotaSatelital = new ArrayList<>();
@@ -63,13 +59,13 @@ public class ConsoleApplication implements CommandLineRunner{
 
     private String getMessage(String[][] mensajes){
 
-        Satelite kenobi = Satelite.builder().nombre("kenobi").coordenadas(KENOBI_COORDS).build();
+        Satelite kenobi = new Satelite("kenobi", 0, null, SatelitesPositions.POS_KENOBI);
         kenobi.recibirMensaje(0, mensajes[0]);
 
-        Satelite skywalker = Satelite.builder().nombre("skywalker").coordenadas(SKYWALKER_COORDS).build();
+        Satelite skywalker = new Satelite("skywalker", 0, null, SatelitesPositions.POS_SKYWALKER);
         skywalker.recibirMensaje(0, mensajes[1]);
 
-        Satelite sato = Satelite.builder().nombre("sato").coordenadas(SATO_COORDS).build();
+        Satelite sato = new Satelite("sato", 0, null, SatelitesPositions.POS_SATO);
         sato.recibirMensaje(0, mensajes[2]);
 
         List<Satelite> flotaSatelital = new ArrayList<>();

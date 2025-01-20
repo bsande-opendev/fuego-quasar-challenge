@@ -6,35 +6,42 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Satelite {
     
-    private String nombre;
-    private int distancia;
-    private String[] mensaje;
-    private int[] coordenadas;
+    private String name;
+    private int distance;
+    private String[] message;
+    private int[] position;
+    
+    public Satelite(String name) {
+        this.name = name;
+    }
 
     public void recibirMensaje(int distancia, String[] mensaje){
-        this.distancia = distancia;
-        this.mensaje = mensaje;
+        this.distance = distancia;
+        this.message = mensaje;
     }
 
     public int getLongitudMensaje(){
-        return this.getMensaje().length;
+        return this.getMessage().length;
     }
 
     public void arreglarDesfasaje(int longRealMsg){
 
-        if (this.mensaje != null && longRealMsg >= 0 && longRealMsg <= this.getLongitudMensaje()) {
-            this.mensaje = Arrays.copyOfRange(this.mensaje, getLongitudMensaje() - longRealMsg, getLongitudMensaje());
+        if (this.message != null && longRealMsg >= 0 && longRealMsg <= this.getLongitudMensaje()) {
+            this.message = Arrays.copyOfRange(this.message, getLongitudMensaje() - longRealMsg, getLongitudMensaje());
         } else {
             throw new IllegalArgumentException("El mensaje es null o la longitud real es invalida");
         }
@@ -42,7 +49,7 @@ public class Satelite {
     }
 
     public List<Double[]> getInterseccionCon(Satelite sat){
-        return this.calcularInterseccion(this.coordenadas, this.distancia, sat.getCoordenadas(), sat.getDistancia());
+        return this.calcularInterseccion(this.position, this.distance, sat.getPosition(), sat.getDistance());
     }
 
     private List<Double[]> calcularInterseccion(int[] p0, int r0, int[] p1, int r1){
@@ -131,6 +138,10 @@ public class Satelite {
 
     private Double getDosDecimales(Double num) {
         return Math.round(num * 100.0) / 100.0;
+    }
+
+    public Satelite(String string, double d, String[] strings) {
+        //TODO Auto-generated constructor stub
     }
     
 }

@@ -41,9 +41,9 @@ class SateliteServiceTest {
         when(satelite2.getLongitudMensaje()).thenReturn(3);
         when(satelite3.getLongitudMensaje()).thenReturn(3);
 
-        when(satelite1.getMensaje()).thenReturn(new String[] { "este", "", "mensaje" });
-        when(satelite2.getMensaje()).thenReturn(new String[] { "", "es", "" });
-        when(satelite3.getMensaje()).thenReturn(new String[] { "este", "es", "mensaje" });
+        when(satelite1.getMessage()).thenReturn(new String[] { "este", "", "mensaje" });
+        when(satelite2.getMessage()).thenReturn(new String[] { "", "es", "" });
+        when(satelite3.getMessage()).thenReturn(new String[] { "este", "es", "mensaje" });
 
         List<Satelite> flota = Arrays.asList(satelite1, satelite2, satelite3);
 

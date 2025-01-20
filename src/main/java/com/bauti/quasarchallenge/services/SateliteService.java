@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bauti.quasarchallenge.constants.SatelitesPositions;
 import com.bauti.quasarchallenge.entities.Satelite;
 
 @Service
@@ -27,7 +28,7 @@ public class SateliteService {
         List<String> msgDecodificado = new ArrayList<>();
 
         for (int i = 0; i < longRelMsg; i++) {
-            String palabra = primerSat.getMensaje()[i];
+            String palabra = primerSat.getMessage()[i];
 
             if(isPalabraValida(palabra)){
                 msgDecodificado.add(palabra);
@@ -43,7 +44,7 @@ public class SateliteService {
     private String buscarPalabraFaltante(List<Satelite> satelites, int i){
         String palabraPerdida = "";
         for (Satelite satelite: satelites){
-            String palabra = satelite.getMensaje()[i];
+            String palabra = satelite.getMessage()[i];
             if(isPalabraValida(palabra)){
                 palabraPerdida = palabra;
             }
@@ -57,8 +58,10 @@ public class SateliteService {
         
         return false;
     }
-
+    
     public int[] encontrarCoordenadas(List<Satelite> flotaSatelital){
+        cargarPosiciones(flotaSatelital);
+
         if(flotaSatelital.size() == 1) throw new IllegalArgumentException("No hay suficientes satelites activos para determinar la posicion");
 
         if(flotaSatelital.size() == 2) {
@@ -73,7 +76,7 @@ public class SateliteService {
                 return Arrays.stream(interseccion1).mapToInt(Double::intValue).toArray();
             }
 
-            throw new IllegalArgumentException("No hay suficientes satelitos activos para determinar la posicion");
+            throw new IllegalArgumentException("No hay suficientes satelites activos para determinar la posicion");
         }
 
         //Si son 3 o mas..
@@ -97,13 +100,33 @@ public class SateliteService {
             }
         }
 
-        if (coordenadas == null) {
+        if (coordenadas == null) {  
             throw new IllegalArgumentException("La posicion no pudo ser determinada");
         }
         
         return Arrays.stream(coordenadas).mapToInt(Double::intValue).toArray();
     }
 
+    private List<Satelite> cargarPosiciones(List<Satelite> flota){
+        for (Satelite satellite : flota) {
+            if (satellite.getName() != null) {
+                switch (satellite.getName().toUpperCase()) {
+                    case "KENOBI":
+                        if (satellite.getPosition() == null) satellite.setPosition(SatelitesPositions.POS_KENOBI);
+                        break;
+                    case "SKYWALKER":
+                        if (satellite.getPosition() == null) satellite.setPosition(SatelitesPositions.POS_SKYWALKER);
+                        break;
+                    case "SATO":
+                        if (satellite.getPosition() == null) satellite.setPosition(SatelitesPositions.POS_SATO);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return flota;
+    }
     private Boolean sonIguales(Double[] a, Double[] b){
         return this.compararConError(a[0], b[0])  && this.compararConError(a[1], b[1]);
     }
