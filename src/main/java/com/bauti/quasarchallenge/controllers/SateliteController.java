@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.bauti.quasarchallenge.dtos.MensajeRequest;
 import com.bauti.quasarchallenge.dtos.PositionDto;
@@ -18,7 +19,7 @@ import com.bauti.quasarchallenge.dtos.SatelliteRequest;
 import com.bauti.quasarchallenge.dtos.DecodificacionResponse;
 import com.bauti.quasarchallenge.services.SateliteService;
 
-@Controller
+@RestController
 public class SateliteController {
     
     @Autowired
