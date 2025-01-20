@@ -1,0 +1,136 @@
+package com.bauti.quasarchallenge.entities;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@Builder
+@ToString
+public class Satelite {
+    
+    private String nombre;
+    private int distancia;
+    private String[] mensaje;
+    private int[] coordenadas;
+
+    public void recibirMensaje(int distancia, String[] mensaje){
+        this.distancia = distancia;
+        this.mensaje = mensaje;
+    }
+
+    public int getLongitudMensaje(){
+        return this.getMensaje().length;
+    }
+
+    public void arreglarDesfasaje(int longRealMsg){
+
+        if (this.mensaje != null && longRealMsg >= 0 && longRealMsg <= this.getLongitudMensaje()) {
+            this.mensaje = Arrays.copyOfRange(this.mensaje, getLongitudMensaje() - longRealMsg, getLongitudMensaje());
+        } else {
+            throw new IllegalArgumentException("El mensaje es null o la longitud real es invalida");
+        }
+
+    }
+
+    public List<Double[]> getInterseccionCon(Satelite sat){
+        return this.calcularInterseccion(this.coordenadas, this.distancia, sat.getCoordenadas(), sat.getDistancia());
+    }
+
+    private List<Double[]> calcularInterseccion(int[] p0, int r0, int[] p1, int r1){
+        MathContext mc = new MathContext(1000, RoundingMode.HALF_UP);
+        
+        int x0 = p0[0];
+        int y0 = p0[1];
+        int x1 = p1[0];
+        int y1 = p1[1];
+
+        int dx = x1 - x0;
+        int dy = y1 - y0;
+
+        //Si la distancia es menor a la diferencia de radios entoneces hay uno adentro del otro
+        if(Math.hypot(dx, dy) < Math.abs(r0 - r1)){
+            throw new IllegalArgumentException("No se puede calcular la interseccion, un circulo contiene totalmente al otro");
+        }
+
+        //Si la distancia entre los centros es mayor a la suma de los dos radios, no se pueden intersectar nunca
+        if(Math.hypot(dx, dy) > (r0 + r1)){
+            throw new IllegalArgumentException("No se puede calcular la interseccion, los radios no se interseccionan");
+        }
+
+        //Si no hay distancia entre puntos, y coinciden los radios, son el mismo circulo
+        if(Math.hypot(dx, dy) == 0 && r1 == r0){
+            throw new IllegalArgumentException("No se puede calcular la interseccion, los circulos son iguales");
+        }
+
+        BigDecimal d = hipotenusa(BigDecimal.valueOf(dx), BigDecimal.valueOf(dy));
+
+        //Distancia al punto que esta en la interseccion de la linea entre los centros de los circulos 
+        // y la linea entre los puntos de interseccion de los circulos
+        BigDecimal dxBD = BigDecimal.valueOf(dx);
+        BigDecimal dyBD = BigDecimal.valueOf(dy);
+        BigDecimal x0BD = BigDecimal.valueOf(x0);
+        BigDecimal y0BD = BigDecimal.valueOf(y0);
+
+        BigDecimal r0b = BigDecimal.valueOf(r0);
+        BigDecimal r1b = BigDecimal.valueOf(r1);
+
+        BigDecimal r0r0 = r0b.multiply(r0b, mc);
+        BigDecimal r1r1 = r1b.multiply(r1b, mc);
+        BigDecimal dd = d.multiply(d, mc);
+
+        BigDecimal arriba = r0r0.subtract(r1r1, mc).add(dd, mc);
+        BigDecimal abajo = d.multiply(BigDecimal.valueOf(2L), mc);
+
+        BigDecimal a = arriba.divide(abajo, mc);
+
+
+        BigDecimal dxasobred = dxBD.multiply(a, mc).divide(d, mc);
+        BigDecimal dyasobred = dyBD.multiply(a, mc).divide(d, mc);
+
+        BigDecimal x2 = x0BD.add(dxasobred, mc);
+        BigDecimal y2 = y0BD.add(dyasobred, mc);
+
+        //Distancia del punto T a cualquiera de los dos puntos de interseccion de los circulos (G)
+        BigDecimal aa = a.multiply(a, mc);
+        BigDecimal r0r0menosaa = r0r0.subtract(aa, mc);
+
+        BigDecimal h = r0r0menosaa.sqrt(mc);
+
+        BigDecimal hsobred = h.divide(d, mc);
+        BigDecimal rx = dyBD.negate().multiply(hsobred, mc);
+        BigDecimal ry = dxBD.multiply(hsobred, mc);
+
+        //Coordenadas finales de los puntos de interseccion
+        Double xi = getDosDecimales(x2.doubleValue() + rx.doubleValue());
+        Double xiprime = getDosDecimales(x2.doubleValue() - rx.doubleValue());
+        Double yi = getDosDecimales(y2.doubleValue() + ry.doubleValue());
+        Double yiprime = getDosDecimales(y2.doubleValue() - ry.doubleValue());
+        
+        return List.of(new Double[]{xi, yi}, new Double[]{xiprime, yiprime});
+    }
+
+    private BigDecimal hipotenusa(BigDecimal a, BigDecimal b){
+
+        BigDecimal a2 = a.multiply(a);
+        BigDecimal b2 = b.multiply(b);
+        BigDecimal ab = a2.add(b2);
+
+        BigDecimal h = ab.sqrt(new MathContext(1000, RoundingMode.HALF_UP));
+
+        return h;
+    }
+
+    private Double getDosDecimales(Double num) {
+        return Math.round(num * 100.0) / 100.0;
+    }
+    
+}
