@@ -15,7 +15,6 @@ mvn spring-boot:run
 
 ## Uso
 El contexto base es /api/v1 y corre en el puerto 8080.
-También se encuentra hosteado en render.com
 
 Los satelites son 3, llamados como en el challenge (Kenobi, Skywalker, y Sato)
 
