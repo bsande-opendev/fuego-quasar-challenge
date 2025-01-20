@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bauti.quasarchallenge.constants.SatelitesNames;
 import com.bauti.quasarchallenge.constants.SatelitesPositions;
+import com.bauti.quasarchallenge.entities.Mensaje;
 import com.bauti.quasarchallenge.entities.Satelite;
 
 @Service
@@ -111,13 +113,13 @@ public class SateliteService {
         for (Satelite satellite : flota) {
             if (satellite.getName() != null) {
                 switch (satellite.getName().toUpperCase()) {
-                    case "KENOBI":
+                    case SatelitesNames.KENOBI:
                         if (satellite.getPosition() == null) satellite.setPosition(SatelitesPositions.POS_KENOBI);
                         break;
-                    case "SKYWALKER":
+                    case SatelitesNames.SKYWALKER:
                         if (satellite.getPosition() == null) satellite.setPosition(SatelitesPositions.POS_SKYWALKER);
                         break;
-                    case "SATO":
+                    case SatelitesNames.SATO:
                         if (satellite.getPosition() == null) satellite.setPosition(SatelitesPositions.POS_SATO);
                         break;
                     default:

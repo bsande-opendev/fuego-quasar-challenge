@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class SateliteTests {
+    
     @Test
     void devuelveLongitudMensaje() {
         Satelite satelite = new Satelite();
@@ -34,8 +35,12 @@ class SateliteTests {
 
     @Test
     void errorCirculosContenidos() {
-        Satelite sat1 = new Satelite("kenobi", 5, null, new int[]{0, 0});
-        Satelite sat2 = new Satelite("sato", 2, null, new int[]{0, 0});
+        Satelite sat1 = new Satelite("kenobi");
+        sat1.setDistance(5);
+        sat1.setPosition(List.of(0,0));
+        Satelite sat2 = new Satelite("sato");
+        sat2.setDistance(2);
+        sat2.setPosition(List.of(0,0));
 
         assertThrows(IllegalArgumentException.class, () -> sat1.getInterseccionCon(sat2));
     }
@@ -52,8 +57,11 @@ class SateliteTests {
     @Test
     void devuelveAmbosPuntosCuandoHayDosIntersecciones() {
 
-        Satelite keno = new Satelite("kenobi", 0, null, new int[] {0,0});
-        Satelite sato = new Satelite("sato", 0, null, new int[] {1,1});
+        Satelite keno = new Satelite("kenobi");
+        keno.setPosition(List.of(0,0));
+        Satelite sato = new Satelite("sato");
+        sato.setPosition(List.of(1,1));
+
         keno.recibirMensaje(1, new String[] {""});
         sato.recibirMensaje(1, new String[] {""});
 
@@ -68,8 +76,10 @@ class SateliteTests {
 
     @Test
     void errorNoInterseccion() {
-        Satelite keno = new Satelite("kenobi", 0, null, new int[] {0,0});
-        Satelite sato = new Satelite("sato", 0, null, new int[] {2,1});
+        Satelite keno = new Satelite("kenobi");
+        keno.setPosition(List.of(0,0));
+        Satelite sato = new Satelite("sato");
+        sato.setPosition(List.of(2,1));
         keno.recibirMensaje(1, new String[] {""});
         sato.recibirMensaje(1, new String[] {""});
 

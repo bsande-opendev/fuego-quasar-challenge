@@ -1,8 +1,10 @@
 package com.bauti.quasarchallenge.constants;
 
+import java.util.List;
+
 public final class SatelitesPositions {
-   public static final int[] POS_KENOBI = {-500, -200};
-   public static final int[] POS_SKYWALKER = {100, -100};
-   public static final int[] POS_SATO = {500, 100};
+   public static final List<Integer> POS_KENOBI = List.of(-500, -200);
+   public static final List<Integer> POS_SKYWALKER = List.of(100, -100);
+   public static final List<Integer> POS_SATO = List.of(500, 100);
 
 }

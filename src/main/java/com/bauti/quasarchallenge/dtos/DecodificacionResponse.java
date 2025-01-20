@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SatelliteResponse {
+public class DecodificacionResponse {
     PositionDto position;
     String message;
 }

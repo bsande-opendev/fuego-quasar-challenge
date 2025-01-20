@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.bauti.quasarchallenge.dtos.MensajeRequest;
 import com.bauti.quasarchallenge.dtos.PositionDto;
 import com.bauti.quasarchallenge.dtos.SatelliteRequest;
-import com.bauti.quasarchallenge.dtos.SatelliteResponse;
+import com.bauti.quasarchallenge.dtos.DecodificacionResponse;
 import com.bauti.quasarchallenge.services.SateliteService;
 
 @Controller
@@ -25,7 +27,7 @@ public class SateliteController {
     @PostMapping("/topsecret")
     public ResponseEntity receiveSatellites(@RequestBody SatelliteRequest satelliteRequest) {
         try {
-            SatelliteResponse response = new SatelliteResponse();
+            DecodificacionResponse response = new DecodificacionResponse();
             response.setMessage(satService.decodificarMensaje(satelliteRequest.getSatellites()));
             int[] coords = satService.encontrarCoordenadas(satelliteRequest.getSatellites());
             PositionDto positionDto = PositionDto.builder().x(coords[0]).y(coords[1]).build();
@@ -39,6 +41,6 @@ public class SateliteController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+    
 }

@@ -59,13 +59,13 @@ public class ConsoleApplication implements CommandLineRunner{
 
     private String getMessage(String[][] mensajes){
 
-        Satelite kenobi = new Satelite("kenobi", 0, null, SatelitesPositions.POS_KENOBI);
+        Satelite kenobi = new Satelite("kenobi", SatelitesPositions.POS_KENOBI);
         kenobi.recibirMensaje(0, mensajes[0]);
 
-        Satelite skywalker = new Satelite("skywalker", 0, null, SatelitesPositions.POS_SKYWALKER);
+        Satelite skywalker = new Satelite("skywalker", SatelitesPositions.POS_SKYWALKER);
         skywalker.recibirMensaje(0, mensajes[1]);
 
-        Satelite sato = new Satelite("sato", 0, null, SatelitesPositions.POS_SATO);
+        Satelite sato = new Satelite("sato", SatelitesPositions.POS_SATO);
         sato.recibirMensaje(0, mensajes[2]);
 
         List<Satelite> flotaSatelital = new ArrayList<>();

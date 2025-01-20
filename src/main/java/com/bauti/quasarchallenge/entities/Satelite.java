@@ -5,9 +5,16 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,14 +24,32 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor 
+@Entity
 public class Satelite {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
+
+    @Transient
     private int distance;
+
+    @Transient
     private String[] message;
-    private int[] position;
     
+    private List<Integer> position;
+
+    @OneToMany(mappedBy = "satelite", cascade = CascadeType.ALL)
+    private List<Mensaje> mensajes;
+
+    public Satelite(String name, List<Integer> position) {
+        this.name = name;
+        this.position = position;
+    }
+
     public Satelite(String name) {
         this.name = name;
     }
@@ -52,13 +77,13 @@ public class Satelite {
         return this.calcularInterseccion(this.position, this.distance, sat.getPosition(), sat.getDistance());
     }
 
-    private List<Double[]> calcularInterseccion(int[] p0, int r0, int[] p1, int r1){
+    private List<Double[]> calcularInterseccion(List<Integer> p0, int r0, List<Integer> p1, int r1){
         MathContext mc = new MathContext(1000, RoundingMode.HALF_UP);
         
-        int x0 = p0[0];
-        int y0 = p0[1];
-        int x1 = p1[0];
-        int y1 = p1[1];
+        int x0 = p0.get(0);
+        int y0 = p0.get(1);
+        int x1 = p1.get(0);
+        int y1 = p1.get(1);
 
         int dx = x1 - x0;
         int dy = y1 - y0;
